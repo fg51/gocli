@@ -1,6 +1,6 @@
 package cmd
 
-import "fmt"
+import "os"
 
 import "github.com/spf13/cobra"
 
@@ -19,8 +19,10 @@ var RootCmd = &cobra.Command{
 }
 
 func Execute() ExitStatus {
+	RootCmd.SetOutput(os.Stdout)
 	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		RootCmd.SetOutput(os.Stderr)
+		RootCmd.Println(err)
 		return ExitFailure
 	}
 	return ExitSuccess
